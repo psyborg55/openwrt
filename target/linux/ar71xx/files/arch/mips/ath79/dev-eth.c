@@ -986,6 +986,7 @@ void __init ath79_register_eth(unsigned int id)
 					   AR934X_RESET_GE0_MDIO;
 			pdata->set_speed = ar934x_set_speed_ge0;
 
+			pdata->phy_mask = BIT(4);
 			if (ath79_soc == ATH79_SOC_QCA9533)
 				pdata->disable_inline_checksum_engine = 1;
 		} else {

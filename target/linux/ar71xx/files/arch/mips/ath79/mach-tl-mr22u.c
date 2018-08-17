@@ -81,9 +81,6 @@ static void __init tl_mr22u_setup(void)
 	u8 *mac = (u8 *) KSEG1ADDR(0x1f01fc00);
 	u8 *ee = (u8 *) KSEG1ADDR(0x1fff1000);
 
-	/* disable PHY_SWAP and PHY_ADDR_SWAP bits */
-	ath79_setup_ar933x_phy4_switch(false, false);
-
 	ath79_register_m25p80(&tl_mr22u_flash_data);
 	ath79_register_leds_gpio(-1, ARRAY_SIZE(tl_mr22u_leds_gpio),
 				 tl_mr22u_leds_gpio);
@@ -98,10 +95,7 @@ static void __init tl_mr22u_setup(void)
 
 	ath79_register_mdio(0, 0x0);
 	ath79_init_mac(ath79_eth0_data.mac_addr, mac, 0);
-	ath79_eth0_data.duplex = DUPLEX_FULL;
-	ath79_eth0_data.phy_if_mode = PHY_INTERFACE_MODE_MII;
-	ath79_eth0_data.speed = SPEED_100;
-	ath79_eth0_data.phy_mask = BIT(4);
+
 	ath79_register_eth(0);
 	ath79_register_wmac(ee, mac);
 }

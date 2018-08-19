@@ -199,16 +199,16 @@ void __init ath79_register_mdio(unsigned int id, u32 phy_mask)
 	switch (ath79_soc) {
 	case ATH79_SOC_AR7241:
 	case ATH79_SOC_AR9330:
-	case ATH79_SOC_AR9331:
-	case ATH79_SOC_QCA9533:
 	case ATH79_SOC_TP9343:
 		mdio_dev = &ath79_mdio1_device;
 		mdio_data = &ath79_mdio1_data;
 		break;
 
+	case ATH79_SOC_AR9331:
 	case ATH79_SOC_AR9341:
 	case ATH79_SOC_AR9342:
 	case ATH79_SOC_AR9344:
+	case ATH79_SOC_QCA9533:
 	case ATH79_SOC_QCA9556:
 	case ATH79_SOC_QCA9558:
 	case ATH79_SOC_QCA956X:
@@ -246,7 +246,9 @@ void __init ath79_register_mdio(unsigned int id, u32 phy_mask)
 		mdio_data->is_ar9330 = 1;
 		/* fall through */
 	case ATH79_SOC_AR9331:
-		mdio_data->builtin_switch = 1;
+	case ATH79_SOC_QCA9533:
+		if (id == 1)
+			mdio_data->builtin_switch = 1;
 		break;
 
 	case ATH79_SOC_AR9341:
@@ -260,7 +262,6 @@ void __init ath79_register_mdio(unsigned int id, u32 phy_mask)
 		mdio_data->is_ar934x = 1;
 		break;
 
-	case ATH79_SOC_QCA9533:
 	case ATH79_SOC_TP9343:
 		mdio_data->builtin_switch = 1;
 		break;

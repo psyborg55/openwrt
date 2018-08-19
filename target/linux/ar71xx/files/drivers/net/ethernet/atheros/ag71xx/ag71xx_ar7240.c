@@ -1251,7 +1251,7 @@ static struct ar7240sw *ar7240_probe(struct ag71xx *ag)
 		swdev->name = "AR7240/AR9330 built-in switch";
 		swdev->ports = AR7240_NUM_PORTS - 1;
 	} else if (sw_is_ar934x(as)) {
-		swdev->name = "AR934X built-in switch";
+		swdev->name = "AR934X/AR953X built-in switch";
 
 		if (pdata->phy_if_mode == PHY_INTERFACE_MODE_GMII) {
 			ar7240sw_reg_set(mii, AR934X_REG_OPER_MODE0,

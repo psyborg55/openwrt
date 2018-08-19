@@ -179,9 +179,11 @@ void __init ath79_register_mdio(unsigned int id, u32 phy_mask)
 	struct ag71xx_mdio_platform_data *mdio_data;
 	unsigned int max_id;
 
-	if (ath79_soc == ATH79_SOC_AR9341 ||
+	if (ath79_soc == ATH79_SOC_AR9331 ||
+	    ath79_soc == ATH79_SOC_AR9341 ||
 	    ath79_soc == ATH79_SOC_AR9342 ||
 	    ath79_soc == ATH79_SOC_AR9344 ||
+	    ath79_soc == ATH79_SOC_QCA9533 ||
 	    ath79_soc == ATH79_SOC_QCA9556 ||
 	    ath79_soc == ATH79_SOC_QCA9558 ||
 	    ath79_soc == ATH79_SOC_QCA956X)

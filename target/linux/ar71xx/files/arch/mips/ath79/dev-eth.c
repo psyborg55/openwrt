@@ -699,6 +699,7 @@ static int __init ath79_setup_phy_if_mode(unsigned int id,
 		case ATH79_SOC_AR7241:
 		case ATH79_SOC_AR9330:
 		case ATH79_SOC_AR9331:
+		case ATH79_SOC_QCA9533:
 		case ATH79_SOC_TP9343:
 			pdata->phy_if_mode = PHY_INTERFACE_MODE_GMII;
 			break;
@@ -709,7 +710,6 @@ static int __init ath79_setup_phy_if_mode(unsigned int id,
 		case ATH79_SOC_AR9341:
 		case ATH79_SOC_AR9342:
 		case ATH79_SOC_AR9344:
-		case ATH79_SOC_QCA9533:
 		case ATH79_SOC_QCA956X:
 			switch (pdata->phy_if_mode) {
 			case PHY_INTERFACE_MODE_MII:

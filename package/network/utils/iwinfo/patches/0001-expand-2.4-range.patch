@@ -1,0 +1,11 @@
+--- a/iwinfo_nl80211.c	2018-09-07 18:25:48.590292273 +0200
++++ b/iwinfo_nl80211.c	2018-09-07 18:27:21.638747161 +0200
+@@ -2698,7 +2698,7 @@ static int nl80211_get_modelist_cb(struc
+ 				if (!freqs[NL80211_FREQUENCY_ATTR_FREQ])
+ 					continue;
+ 
+-				if (nla_get_u32(freqs[NL80211_FREQUENCY_ATTR_FREQ]) < 2485)
++				if (nla_get_u32(freqs[NL80211_FREQUENCY_ATTR_FREQ]) < 3000)
+ 				{
+ 					m->hw |= IWINFO_80211_B;
+ 					m->hw |= IWINFO_80211_G;

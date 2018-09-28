@@ -89,7 +89,7 @@ static void __init tl_mr22u_setup(void)
 					tl_mr22u_gpio_keys);
 
 	gpio_request_one(TL_MR22U_GPIO_USB_POWER,
-			 GPIOF_OUT_INIT_HIGH | GPIOF_EXPORT_DIR_FIXED,
+			 GPIOF_OUT_INIT_HIGH | GPIOF_EXPORT_DIR_CHANGEABLE,
 			 "USB power");
 	ath79_register_usb();
 

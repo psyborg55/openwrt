@@ -925,8 +925,8 @@ void __init ath79_register_eth(unsigned int id)
 		if (id == 0) {
 			pdata->reset_bit |= AR71XX_RESET_GE0_PHY;
 			pdata->set_speed = ath79_set_speed_dummy;
-
-			pdata->phy_mask = BIT(4);
+			if (!pdata->phy_mask)
+				pdata->phy_mask = BIT(4);
 		} else {
 			pdata->reset_bit |= AR71XX_RESET_GE1_PHY;
 			pdata->set_speed = ath79_set_speed_dummy;
@@ -961,8 +961,8 @@ void __init ath79_register_eth(unsigned int id)
 			pdata->reset_bit = AR933X_RESET_GE0_MAC |
 					   AR933X_RESET_GE0_MDIO;
 			pdata->set_speed = ath79_set_speed_dummy;
-
-			pdata->phy_mask = BIT(4);
+			if (!pdata->phy_mask)
+				pdata->phy_mask = BIT(4);
 		} else {
 			pdata->reset_bit = AR933X_RESET_GE1_MAC |
 					   AR933X_RESET_GE1_MDIO;
@@ -988,8 +988,8 @@ void __init ath79_register_eth(unsigned int id)
 			pdata->reset_bit = AR934X_RESET_GE0_MAC |
 					   AR934X_RESET_GE0_MDIO;
 			pdata->set_speed = ar934x_set_speed_ge0;
-
-			pdata->phy_mask = BIT(4);
+			if (!pdata->phy_mask)
+				pdata->phy_mask = BIT(4);
 			if (ath79_soc == ATH79_SOC_QCA9533)
 				pdata->disable_inline_checksum_engine = 1;
 		} else {

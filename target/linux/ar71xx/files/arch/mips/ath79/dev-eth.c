@@ -246,7 +246,6 @@ void __init ath79_register_mdio(unsigned int id, u32 phy_mask)
 		mdio_data->is_ar9330 = 1;
 		/* fall through */
 	case ATH79_SOC_AR9331:
-	case ATH79_SOC_QCA9533:
 		if (id == 1)
 			mdio_data->builtin_switch = 1;
 		break;
@@ -254,6 +253,7 @@ void __init ath79_register_mdio(unsigned int id, u32 phy_mask)
 	case ATH79_SOC_AR9341:
 	case ATH79_SOC_AR9342:
 	case ATH79_SOC_AR9344:
+	case ATH79_SOC_QCA9533:
 		if (id == 1) {
 			mdio_data->builtin_switch = 1;
 			mdio_data->ref_clock = ar934x_get_mdio_ref_clock();

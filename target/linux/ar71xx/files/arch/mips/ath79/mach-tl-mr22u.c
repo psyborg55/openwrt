@@ -24,7 +24,6 @@
 #include "dev-wmac.h"
 #include "machtypes.h"
 
-#define TL_MR22U_GPIO_USB_POWER		11
 #define TL_MR22U_GPIO_BTN_RESET		12
 #define TL_MR22U_GPIO_LED_SYSTEM	13
 #define TL_MR22U_GPIO_BTN_SW1		14
@@ -88,9 +87,6 @@ static void __init tl_mr22u_setup(void)
 					ARRAY_SIZE(tl_mr22u_gpio_keys),
 					tl_mr22u_gpio_keys);
 
-	gpio_request_one(TL_MR22U_GPIO_USB_POWER,
-			 GPIOF_OUT_INIT_HIGH | GPIOF_EXPORT_DIR_CHANGEABLE,
-			 "USB power");
 	ath79_register_usb();
 
 	ath79_register_mdio(0, 0x0);

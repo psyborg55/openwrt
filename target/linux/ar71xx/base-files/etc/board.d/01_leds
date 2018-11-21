@@ -753,6 +753,9 @@ tew-732br)
 tew-823dru)
 	ucidef_set_led_netdev "wan" "WAN" "trendnet:green:planet" "eth0"
 	;;
+tl-mr22u)
+	ucidef_set_led_default "system" "system" "tp-link:blue:system" "none"
+	;;
 tl-mr11u|\
 tl-mr3020|\
 tl-mr3040|\

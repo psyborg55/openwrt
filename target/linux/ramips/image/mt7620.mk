@@ -211,6 +211,23 @@ define Device/e1700
 endef
 TARGET_DEVICES += e1700
 
+define Device/ea2750
+  BLOCKSIZE := 128k
+  DTS := EA2750
+  DEVICE_TITLE := Linksys EA2750
+  DEVICE_PACKAGES := kmod-usb2 kmod-usb-ohci swconfig
+  IMAGE_SIZE := 38912k
+  IMAGES := kernel1.bin rootfs1.bin
+  IMAGE/kernel1.bin := append-kernel
+  IMAGE/rootfs1.bin := append-ubi | check-size $$$$(IMAGE_SIZE)
+  KERNEL := $(KERNEL_DTB) | uImage lzma
+  KERNEL_SIZE := 2048k
+  PAGESIZE := 2048
+  SUPPORTED_DEVICES := linksys,ea2750
+  UBINIZE_OPTS := -E 5
+endef
+TARGET_DEVICES += ea2750
+ 
 define Device/ex2700
   NETGEAR_HW_ID := 29764623+4+0+32+2x2+0
   NETGEAR_BOARD_ID := EX2700

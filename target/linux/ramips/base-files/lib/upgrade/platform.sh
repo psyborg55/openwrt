@@ -54,6 +54,7 @@ platform_check_image() {
 	dir-810l|\
 	duzun-dm06|\
 	e1700|\
+	ea2750|\
 	elecom,wrc-1167ghbk2-s|\
 	elecom,wrc-2533gst|\
 	esr-9753|\

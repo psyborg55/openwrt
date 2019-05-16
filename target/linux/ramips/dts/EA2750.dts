@@ -1,0 +1,244 @@
+/*
+ * Device Tree file for the Linksys EA2750
+ *
+ * Copyright (C) 2014 Imre Kaloz <kaloz@openwrt.org>
+ * Copyright (C) 2018 Tomislav Pozega <pozega.tomislav@gmail.com>
+ *
+ * This file is licensed under the terms of the GNU General Public
+ * License version 2.  This program is licensed "as is" without any
+ * warranty of any kind, whether express or implied.
+ */
+
+/dts-v1/;
+
+#include "mt7620a.dtsi"
+
+#include <dt-bindings/gpio/gpio.h>
+#include <dt-bindings/input/input.h>
+
+/ {
+	compatible = "linksys,ea2750", "ralink,mt7620a-soc";
+	model = "Linksys EA2750";
+
+	memory@0 {
+		device_type = "memory";
+		reg = <0x0 0x8000000>;
+	};
+
+	chosen {
+		bootargs = "console=ttyS0,115200";
+	};
+
+	gpio-keys-polled {
+		compatible = "gpio-keys-polled";
+		poll-interval = <20>;
+
+		reset {
+			label = "reset";
+			gpios = <&gpio0 1 GPIO_ACTIVE_HIGH>;
+			linux,code = <KEY_RESTART>;
+		};
+
+		wps {
+			label = "wps";
+			gpios = <&gpio0 2 GPIO_ACTIVE_HIGH>;
+			linux,code = <KEY_WPS_BUTTON>;
+		};
+	};
+
+	gpio-leds {
+		compatible = "gpio-leds";
+
+		wps {
+			label = "ea2750:green:wps";
+			gpios = <&gpio0 12 GPIO_ACTIVE_LOW>;
+		};
+	};
+
+	nand {
+		status = "okay";
+		compatible = "mtk,mt7620-nand";
+		#address-cells = <1>;
+		#size-cells = <1>;
+
+		partition@0 {
+			label = "uboot";
+			reg = <0x0 0x80000>;
+			read-only;
+		};
+
+		partition@80000 {
+			label = "u_env";
+			reg = <0x80000 0x40000>;
+			read-only;
+		};
+
+		factory: partition@c0000 {
+			label = "Factory";
+			reg = <0xc0000 0x40000>;
+			read-only;
+		};
+
+		partition@100000 {
+			label = "s_env";
+			reg = <0x100000 0x40000>;
+			read-only;
+		};
+
+		partition@140000 {
+			label = "devinfo";
+			reg = <0x140000 0x40000>;
+			read-only;
+		};
+
+		partition@180000 {
+			label = "kernel0";
+			reg = <0x180000 0x200000>;
+		};
+
+		partition@380000 {
+			label = "rootfs0";
+			reg = <0x380000 0x2600000>;
+		};
+
+		/* uboot expects to find kernels at 0x200000 & 0x600000
+		 * referred to as system 1 & system 2 respectively.
+		 * a kernel is considered suitable for handing control over
+		 * if its linux magic number exists & uImage CRC are correct.
+		 * If either of those conditions fail, a matching sys'n'_fail flag
+		 * is set in uboot env & a restart performed in the hope that the
+		 * alternate kernel is okay.
+		 * if neither kernel checksums ok and both are marked failed, system 2
+		 * is booted anyway.
+		 *
+		 * Note uboot's tftp flash install writes the transferred
+		 * image to both kernel partitions.
+		 */
+
+		partition@2980000 {
+			label = "kernel1";
+			reg = <0x2980000 0x200000>;
+		};
+
+		partition@2b80000 {
+			label = "rootfs1";
+			reg = <0x2b80000 0x2600000>;
+		};
+
+		/* ubi partition is the result of squashing
+		 * next consecutive stock partitions:
+		 * - rootfs0 (rootfs partition for stock kernel0),
+		 * - rootfs1 (rootfs partition for stock failsafe kernel1),
+		 * - overlay (used as ubi overlay in stock fw)
+		 * resulting 117,5MiB space for packages.
+		 */
+
+		partition@a00000 {
+			label = "syscfg";
+			reg = <0x5180000 0x2e80000>;
+
+/*		partition@a00000 {
+			label = "ubi";
+			reg = <0xa00000 0x7580000>;*/
+		};
+	};
+};
+
+&gpio0 {
+	status = "okay";
+};
+
+&gpio1 {
+	status = "okay";
+};
+
+&gpio2 {
+	status = "okay";
+};
+
+&ehci {
+	status = "okay";
+};
+
+&ohci {
+	status = "okay";
+};
+
+&pinctrl {
+	state_default: pinctrl0 {
+		gpio {
+			ralink,group = "i2c", "uartf";
+			ralink,function = "gpio";
+		};
+	};
+};
+
+&ethernet {
+	status = "okay";
+	mtd-mac-address = <&factory 0x28>;
+	pinctrl-names = "default";
+	pinctrl-0 = <&rgmii1_pins &rgmii2_pins &mdio_pins>;
+
+	port@5 {
+		status = "okay";
+		mediatek,fixed-link = <1000 1 1 1>;
+		phy-mode = "rgmii";
+	};
+
+	mdio-bus {
+		status = "okay";
+
+		phy0: ethernet-phy@0 {
+			reg = <0>;
+			phy-mode = "rgmii";
+		};
+
+		phy1: ethernet-phy@1 {
+			reg = <1>;
+			phy-mode = "rgmii";
+		};
+
+		phy2: ethernet-phy@2 {
+			reg = <2>;
+			phy-mode = "rgmii";
+		};
+
+		phy3: ethernet-phy@3 {
+			reg = <3>;
+			phy-mode = "rgmii";
+		};
+
+		phy4: ethernet-phy@4 {
+			reg = <4>;
+			phy-mode = "rgmii";
+		};
+
+		phy1f: ethernet-phy@1f {
+			reg = <0x1f>;
+			phy-mode = "rgmii";
+		};
+	};
+};
+
+&gsw {
+	mediatek,port4 = "gmac";
+};
+
+&wmac {
+	ralink,mtd-eeprom = <&factory 0x0000>;
+	pinctrl-names = "default";
+	pinctrl-0 = <&pa_pins>;
+};
+
+&pcie {
+	status = "okay";
+};
+
+&pcie0 {
+	wifi@1814,5592 {
+		compatible = "pci1814,5592";
+		reg = <0x0000 0 0 0 0>;
+		ralink,2ghz = <0>;
+		ralink,mtd-eeprom = <&factory 0x8000>;
+	};
+};
